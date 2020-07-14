@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 function KegList(props){
   return (
     <React.Fragment>
-      <div key={keg.id}>
       {Object.values(props.kegList).map((keg) => {
-          return <Keg 
+        return (
+        <div key={keg.id}>
+          <Keg 
             whenKegClicked = {props.onKegSelection}
             brand={keg.brand}
             name={keg.name}
@@ -15,10 +16,10 @@ function KegList(props){
             alcoholContent={keg.alcoholContent}
             id={keg.id}
             key={keg.id}/>
-          })}
           <button onClick={() => props.onSellingPint(keg.id) }>Sell Pint</button>
           <hr />
         </div>
+      )})}
     </React.Fragment>
   );
 }
