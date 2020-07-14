@@ -41,7 +41,11 @@ class KegControl extends React.Component {
   handleSellingPint = (id) => {
     const currentState = [...this.state.masterKegList];
     const selectedKeg = currentState.filter(keg => keg.id === id)[0];
-    selectedKeg.quantity -= 1;
+    if (selectedKeg.quantity === 0 ){
+      selectedKeg.quantity = 0;
+    } else {
+      selectedKeg.quantity -= 1;
+    }
     this.setState({masterKegList: currentState});
   }
 
