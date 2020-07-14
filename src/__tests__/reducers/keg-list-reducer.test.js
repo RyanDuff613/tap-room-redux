@@ -11,6 +11,19 @@ describe('kegListReducer', () => {
     id: 1
   };
 
+  const currentState = {
+    1: {brand: 'ninkasi',
+        name: 'believer',
+        price: '$5.00',
+        alcoholContent: '8%',
+        id: 1 },
+    2: {brand: 'widmer',
+        name: 'hef',
+        price: '$4.00',
+        alcoholContent: '5%',
+        id: 2 },
+  }
+
   test('returns default state if no action type is supplied', () => {
     expect(kegListReducer({}, {type: null})).toEqual({});
   });
@@ -34,6 +47,20 @@ describe('kegListReducer', () => {
         alcoholContent: alcoholContent,
         id: id
       }
+    });
+  });
+
+  test('deletes a keg', () => {
+    action = {
+      type: 'DELETE_KEG',
+      id: 2
+    };
+    expect(kegListReducer(currentState, action)).toEqual({
+      1: {brand: 'ninkasi',
+          name: 'believer',
+          price: '$5.00',
+          alcoholContent: '8%',
+          id: 1 }
     });
   });
 
