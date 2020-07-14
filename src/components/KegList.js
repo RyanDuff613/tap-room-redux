@@ -3,12 +3,11 @@ import Keg from "./Keg";
 import PropTypes from "prop-types";
 
 function KegList(props){
-
   return (
     <React.Fragment>
-      {props.kegList.map((keg) =>
-        <div key={keg.id}>
-          <Keg 
+      <div key={keg.id}>
+      {Object.values(props.kegList).map((keg) => {
+          return <Keg 
             whenKegClicked = {props.onKegSelection}
             brand={keg.brand}
             name={keg.name}
@@ -16,16 +15,16 @@ function KegList(props){
             alcoholContent={keg.alcoholContent}
             id={keg.id}
             key={keg.id}/>
+          })}
           <button onClick={() => props.onSellingPint(keg.id) }>Sell Pint</button>
           <hr />
         </div>
-      )}
     </React.Fragment>
   );
 }
 
 KegList.propTypes = {
-  kegList: PropTypes.array,
+  kegList: PropTypes.object,
   onKegSelection: PropTypes.func,
   onSellingPint: PropTypes.func
 };

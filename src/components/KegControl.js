@@ -2,6 +2,8 @@ import React from "react";
 import NewKegForm from "./NewKegForm";
 import KegList from "./KegList";
 import KegDetail from "./KegDetail";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class KegControl extends React.Component {
 
@@ -9,8 +11,7 @@ class KegControl extends React.Component {
     super(props);
     this.state = {
       formVisible: false,
-      masterKegList: [],
-      selectedKeg: null
+      selectedKeg: null,
     };
   }
 
@@ -28,13 +29,22 @@ class KegControl extends React.Component {
   }
 
   handleAddingNewKeg = (newKeg) => {
-    const newMasterKegList = this.state.masterKegList.concat(newKeg);
-    this.setState({masterKegList: newMasterKegList,
-                    formVisible: false });
+    const {dispatch} = this.props;
+    const { brand, name, price, alcoholContent, id } = newKeg;
+    const action = {
+      type: 'ADD_KEG',
+      brand: brand,
+      name: name,
+      price: price,
+      alcoholContent: alcoholContent,
+      id: id,
+    }
+    dispatch(action);
+    this.setState({formVisible: false});
   }
 
   handleChangingSelectedKeg = (id) => {
-    const selectedKeg = this.state.masterKegList.filter(keg => keg.id === id)[0];
+    const selectedKeg = this.props.masterKegList[id];
     this.setState({selectedKeg: selectedKeg});
   }
 
@@ -60,7 +70,7 @@ class KegControl extends React.Component {
       currentlyVisibleState = <NewKegForm onNewKegCreation={this.handleAddingNewKeg} />;
       buttonText = "Return to Keg List";
     } else {
-      currentlyVisibleState = <KegList kegList={this.state.masterKegList} onKegSelection={this.handleChangingSelectedKeg} onSellingPint={this.handleSellingPint}/>;
+      currentlyVisibleState = <KegList kegList={this.props.masterKegList} onKegSelection={this.handleChangingSelectedKeg} onSellingPint={this.handleSellingPint}/>;
       buttonText = "Add Keg to Inventory";
     }
 
@@ -72,10 +82,18 @@ class KegControl extends React.Component {
       </React.Fragment>
     );
   }
-
-
 }
 
+KegControl.propTypes = {
+  masterKegList: PropTypes.object
+};
 
+const mapStateToProps = state => {
+  return {
+    masterKegList: state
+  }
+}
+
+KegControl = connect(mapStateToProps)(KegControl);
 
 export default KegControl;
